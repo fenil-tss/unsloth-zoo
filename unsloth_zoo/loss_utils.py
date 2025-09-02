@@ -180,7 +180,7 @@ def fused_linear_cross_entropy(
 
     with torch_cuda_device(lm_weight.device):
         loss = linear_cross_entropy(
-            hidden_states.to(lm_weight.dtype),
+            hidden_states.to(lm_weight.dtype if lm_weight.dtype in (torch.float16, torch.bfloat16) else hidden_states.dtype),
             lm_weight,
             targets      = labels,
             ignore_index = ignore_index,
